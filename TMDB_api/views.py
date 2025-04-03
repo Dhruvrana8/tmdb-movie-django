@@ -12,13 +12,13 @@ from .pagination import CustomPageNumberPagination
 class TMDB_Movies_View(APIView):
     def get(self, request, id=None):
         movies = TMDB_Movies.objects.all()
-        
+
         # Handle search query
         search_query = request.query_params.get('search', None)
         if search_query:
             movies = movies.filter(
-                Q(title__icontains=search_query) |
-                Q(original_title__icontains=search_query)
+                Q(title__icontains=search_query.strip()) |
+                Q(original_title__icontains=search_query.strip())
             )
 
         paginator = CustomPageNumberPagination()
